@@ -1,0 +1,198 @@
+\n--- AccountsView.jsx ---\n\n--- AuctionsView.jsx ---\nconst auctions = [
+    {
+      lotId: 'AUC-1099',
+      sellerId: 'USR-8821',
+      product: '500 MT Wheat (Grade A)',
+      status: 'CLOSED',
+      winnerComputed: true,
+      winningBid: { buyerId: 'USR-3301', amount: '₹12,500,000', timestamp: '2026-09-25T14:29:59Z' },
+      linkedOrder: 'ORD-8991',
+      flagged: false,
+    },
+    {
+      lotId: 'AUC-1102',
+      sellerId: 'USR-9044',
+      product: '2000 Liters Sunflower Oil',
+      status: 'LIVE',
+      winnerComputed: false,
+      winningBid: null,
+      linkedOrder: null,
+      flagged: true, // Requires admin intervention due to reported dispute
+    }
+  ];\n--- CasesView.jsx ---\nconst cases = [
+    {
+      caseId: 'CAS-7001',
+      type: 'DISPUTE_COMPLETION',
+      linkedEntity: 'TRIP-4899', // Trip reference
+      reporterId: 'USR-4410', // Buyer reported missing delivery despite trip marking completed
+      status: 'INVESTIGATING',
+      sla: '24h',
+      evidenceAttached: true,
+    }
+  ];\n--- CatalogView.jsx ---\nconst listings = [
+    {
+      id: 'LST-3021',
+      sellerId: 'USR-8821',
+      category: 'Agricultural Produce / Grains',
+      productName: 'Premium Basmati Rice (1000 MT)',
+      unitPrice: '₹85.00 / KG',
+      status: 'PUBLISHED',
+      flagged: false,
+    },
+    {
+      id: 'LST-3099',
+      sellerId: 'USR-7011',
+      category: 'Industrial / Raw Materials',
+      productName: 'Unverified Grade Copper Wire',
+      unitPrice: '₹750.00 / KG',
+      status: 'FLAGGED',
+      flagged: true,
+    }
+  ];\n--- DashboardView.jsx ---\n\n--- OffersView.jsx ---\nconst offers = [
+    {
+      id: 'OFF-110',
+      requirementId: 'REQ-5091',
+      buyerId: 'USR-1022',
+      sellerId: 'USR-8821',
+      offeredQty: '2500 KG',
+      latestPrice: '₹85.00 / KG',
+      status: 'COUNTERED',
+      historyCount: 3,
+    },
+    {
+      id: 'OFF-112',
+      requirementId: 'REQ-5091',
+      buyerId: 'USR-1022',
+      sellerId: 'USR-9044',
+      offeredQty: '1000 KG',
+      latestPrice: '₹82.50 / KG',
+      status: 'ACCEPTED',
+      historyCount: 1,
+    }
+  ];\n--- OrdersView.jsx ---\nconst orders = [
+    {
+      id: 'ORD-8801',
+      buyerId: 'USR-1022',
+      sellerId: 'USR-8821',
+      sourceType: 'OFFER',
+      sourceRef: 'OFF-110',
+      agreedQty: '2500 KG',
+      totalValue: '₹212,500',
+      logisticsLinked: 'TRIP-4901',
+      status: 'LOGISTICS_PENDING',
+    },
+    {
+      id: 'ORD-8991',
+      buyerId: 'USR-3301',
+      sellerId: 'USR-8821',
+      sourceType: 'AUCTION',
+      sourceRef: 'AUC-1099',
+      agreedQty: '500 MT',
+      totalValue: '₹12,500,000',
+      logisticsLinked: null,
+      status: 'FULFILLED',
+    }
+  ];\n--- ReportsView.jsx ---\nconst reports = [
+    {
+      id: 'REP-01',
+      title: 'Settlement Reconciliation Ledger',
+      description: 'Daily export of all pending, reconciled, and settled wallet entries[cite: 1].',
+      lastRun: '2026-09-24 23:59:00',
+      format: 'CSV'
+    },
+    {
+      id: 'REP-02',
+      title: 'Dispute & SLA Breach Report',
+      description: 'Audit of cases exceeding 24h SLA and manual admin interventions.',
+      lastRun: '2026-09-25 08:00:00',
+      format: 'XLSX'
+    },
+    {
+      id: 'REP-03',
+      title: 'Partial Fulfillment & Orphaned Demand',
+      description: 'Tracks requirements closed with remaining unsatisfied quantities[cite: 1].',
+      lastRun: '2026-09-22 18:00:00',
+      format: 'CSV'
+    }
+  ];\n--- RequirementsView.jsx ---\nconst requirements = [
+    {
+      id: 'REQ-5091',
+      buyerId: 'USR-1022',
+      product: 'Premium Robusta Coffee Beans',
+      totalRequested: 5000,
+      unit: 'KG',
+      remainingQty: 1500, // Reduced dynamically by accepted offers
+      deadline: '2026-09-30',
+      status: 'MATCHING',
+      flagged: false,
+      offers: [
+        { offerId: 'OFF-110', sellerId: 'USR-8821', offeredQty: 2500, status: 'ACCEPTED', linkedOrder: 'ORD-8801' },
+        { offerId: 'OFF-112', sellerId: 'USR-9044', offeredQty: 1000, status: 'ACCEPTED', linkedOrder: 'ORD-8802' },
+        { offerId: 'OFF-115', sellerId: 'USR-7731', offeredQty: 1500, status: 'NEGOTIATING', linkedOrder: null },
+      ]
+    },
+    {
+      id: 'REQ-5088',
+      buyerId: 'USR-4410',
+      product: 'Grade-A Basmati Rice',
+      totalRequested: 10000,
+      unit: 'KG',
+      remainingQty: 10000,
+      deadline: '2026-10-05',
+      status: 'PUBLISHED',
+      flagged: true, // Flagged for moderation review
+      offers: []
+    }
+  ];\n--- SettingsView.jsx ---\nconst auditEvents = [
+    {
+      id: 'EVT-9092',
+      timestamp: '2026-09-25T14:45:00Z',
+      actor: 'ADM-9021',
+      action: 'VOID_AUCTION',
+      target: 'AUC-1099',
+      reason: 'POLICY_VIOLATION: Suspicious bidding pattern detected.',
+      ip: '192.168.1.104',
+      caseRef: 'CAS-6992',
+    },
+    {
+      id: 'EVT-9091',
+      timestamp: '2026-09-25T13:12:30Z',
+      actor: 'ADM-8804',
+      action: 'RECONCILE_SETTLEMENT',
+      target: 'SET-9901',
+      reason: 'PAYOUT_RECONCILIATION: Manual adjustment for missing toll fee.',
+      ip: '10.0.0.45',
+      caseRef: 'N/A',
+    }
+  ];\n--- SettlementsView.jsx ---\nconst settlements = [
+    {
+      id: 'SET-9901',
+      tripRef: 'TRIP-4899',
+      payee: 'Kaveri Logistics Fleet',
+      amount: '₹42,500.00',
+      proofStatus: 'EPOD_VERIFIED',
+      settlementStatus: 'SETTLEMENT_DUE',
+      bankRefMasked: 'HDFC••••••9104',
+    }
+  ];\n--- TripsTrackingView.jsx ---\nconst trips = [
+    {
+      tripId: 'TRIP-4901',
+      orderId: 'ORD-8802',
+      transporter: 'Veloce Fleet (TN-04-AB-4029)',
+      route: 'Coimbatore Hub → Chennai Port',
+      currentMilestone: 'IN_TRANSIT',
+      gpsLastSeen: '2 mins ago',
+      isGpsStale: false,
+      consigneeProofSubmitted: false,
+    },
+    {
+      tripId: 'TRIP-4899',
+      orderId: 'ORD-8790',
+      transporter: 'Kaveri Logistics (KA-01-CD-8910)',
+      route: 'Salem Depot → Bengaluru Central',
+      currentMilestone: 'DELIVERED',
+      gpsLastSeen: '45 mins ago',
+      isGpsStale: true,
+      consigneeProofSubmitted: true,
+    }
+  ];
